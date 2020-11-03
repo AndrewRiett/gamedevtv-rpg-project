@@ -30,7 +30,6 @@ namespace RPG.Control
         float timeSinceLastWaypoint = Mathf.Infinity;
         int currentWaypointIndex = 0;
 
-
         private void Awake()
         {
             player = GameObject.FindWithTag("Player");

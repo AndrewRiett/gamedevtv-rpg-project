@@ -7,7 +7,7 @@ using RPG.Control;
 
 namespace RPG.SceneManagement
 {
-    public class Portal : MonoBehaviour 
+    public class Portal : MonoBehaviour
     {
         [Header("SceneLoading:")]
         [SerializeField] int sceneToLoadIndex = -1; // -1 to throw an error if the portal is not configured
@@ -18,8 +18,6 @@ namespace RPG.SceneManagement
         [SerializeField] private float fadeOutTime = 0.5f;
         [SerializeField] private float fadeInTime = 1f;
         [SerializeField] private float fadeWaitTime = 0.5f;
-
-        
 
         private enum DestinationIdentifier
         {
@@ -34,7 +32,6 @@ namespace RPG.SceneManagement
                 StartCoroutine(Transition());
             }
         }
-
         private IEnumerator Transition()
         {
             if (sceneToLoadIndex < 0)
@@ -46,18 +43,25 @@ namespace RPG.SceneManagement
             DontDestroyOnLoad(gameObject); // in order to transfer the portal in another scene and execute its functionality
 
             Fader fader = FindObjectOfType<Fader>();
-            yield return fader.FadeOut(fadeOutTime); // fades the screen before loading
-            
-            yield return SceneManager.LoadSceneAsync(sceneToLoadIndex); // loads the scene
 
+            yield return fader.FadeOut(fadeOutTime); // fades the screen before loading
+
+            SavingWrapper sWrapper = FindObjectOfType<SavingWrapper>();
+            sWrapper.Save(); // saves the current scene state
+
+            yield return SceneManager.LoadSceneAsync(sceneToLoadIndex); // async. loads the scene 
+            
+            sWrapper.Load(); // load the current scene state
+            
             // configure player position while fadeOut() 
             Portal otherPortal = GetOtherPortal();
             UpdatePlayer(otherPortal);
-            
+
+            sWrapper.Save(); // saves as a checkpoint after loading the location
+
             // waits in fadeOut() after the configuration in order to give time for camera and etc. to stabilize
             yield return new WaitForSeconds(fadeWaitTime);
 
-            
             yield return fader.FadeIn(fadeInTime); // fades in after everything is done
 
             Destroy(gameObject);
@@ -66,7 +70,7 @@ namespace RPG.SceneManagement
         private void UpdatePlayer(Portal otherPortal)
         {
             GameObject player = GameObject.FindWithTag("Player");
-            
+
             player.GetComponent<PlayerController>().enabled = false;
 
             // NavMeshAgent.Warp() used in order to prevent conflicts with AI system;
@@ -77,7 +81,7 @@ namespace RPG.SceneManagement
         }
         private Portal GetOtherPortal()
         {
-            foreach(Portal portal in FindObjectsOfType<Portal>())
+            foreach (Portal portal in FindObjectsOfType<Portal>())
             {
                 if (!this.Equals(portal) && portal.destination.Equals(destination))
                 {

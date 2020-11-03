@@ -23,7 +23,6 @@ namespace RPG.Combat
             mover = GetComponent<Mover>();
 
         }
-
         private void Update()
         {
             timeSinceLastAttack += Time.deltaTime;

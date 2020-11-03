@@ -45,6 +45,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 1343937075709056890, guid: 958d2bc26f2a7e64982c9006878bd46a, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5738623570061709536, guid: 958d2bc26f2a7e64982c9006878bd46a, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -92,6 +96,10 @@ PrefabInstance:
     - target: {fileID: 6549471461205127534, guid: 958d2bc26f2a7e64982c9006878bd46a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8972641071843547110, guid: 958d2bc26f2a7e64982c9006878bd46a, type: 3}
+      propertyPath: uniqueIdentifier
+      value: player
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6978087857035933200, guid: 958d2bc26f2a7e64982c9006878bd46a, type: 3}
