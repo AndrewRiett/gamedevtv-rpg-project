@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.AI;
 using RPG.Control;
+using RPG.Saving;
+
 
 namespace RPG.SceneManagement
 {
@@ -46,18 +48,18 @@ namespace RPG.SceneManagement
 
             yield return fader.FadeOut(fadeOutTime); // fades the screen before loading
 
-            SavingWrapper sWrapper = FindObjectOfType<SavingWrapper>();
-            sWrapper.Save(); // saves the current scene state
+            //SavingWrapper sWrapper = FindObjectOfType<SavingWrapper>();
+            //sWrapper.Save(); // saves the current scene state
 
             yield return SceneManager.LoadSceneAsync(sceneToLoadIndex); // async. loads the scene 
             
-            sWrapper.Load(); // load the current scene state
+            //sWrapper.Load(); // load the current scene state
             
             // configure player position while fadeOut() 
             Portal otherPortal = GetOtherPortal();
             UpdatePlayer(otherPortal);
 
-            sWrapper.Save(); // saves as a checkpoint after loading the location
+            // sWrapper.Save(); // saves as a checkpoint after loading the location
 
             // waits in fadeOut() after the configuration in order to give time for camera and etc. to stabilize
             yield return new WaitForSeconds(fadeWaitTime);

@@ -4,7 +4,7 @@ using UnityEngine.Playables;
 
 namespace RPG.Cinematics
 {
-    public class CinematicTrigger : MonoBehaviour, ISaveable
+    public class CinematicTrigger : MonoBehaviour
     {
         [SerializeField] bool alreadyTriggered = false;
 
@@ -16,7 +16,7 @@ namespace RPG.Cinematics
                 GetComponent<PlayableDirector>().Play();
             }
         }
-        public object CaptureState()
+        /*public object CaptureState()
         {
             return alreadyTriggered;
         }
@@ -24,6 +24,6 @@ namespace RPG.Cinematics
         public void RestoreState(object state)
         { 
             alreadyTriggered = (bool)state;
-        }
+        }*/
     }
 }
