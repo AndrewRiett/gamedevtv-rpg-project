@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace RPG.Core
 {
-    public class Health: MonoBehaviour
+    public class Health: MonoBehaviour, ISaveable
     {
         [SerializeField] private float healthPoints = 100f;
         private bool isDead = false;
@@ -29,7 +29,7 @@ namespace RPG.Core
             GetComponent<ActionScheduler>().CancelCurrentAction();
         }
 
-        /*public object CaptureState()
+        public object CaptureState()
         {
             return healthPoints;
         }
@@ -38,10 +38,10 @@ namespace RPG.Core
         {
             healthPoints = (float)state;
 
-            if (healthPoints == 0)
+            if (healthPoints <= 0)
             {
                 Die();
             }
-        }*/
+        }
     }
 }

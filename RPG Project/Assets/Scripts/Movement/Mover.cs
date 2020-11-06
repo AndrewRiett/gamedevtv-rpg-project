@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
 using RPG.Core;
-using RPG.Saving;
 using System.Collections.Generic;
+using RPG.Saving;
 
 namespace RPG.Movement
 {
-    public class Mover : MonoBehaviour, IAction
+    public class Mover : MonoBehaviour, IAction, ISaveable
     {
         [SerializeField] float maxSpeed = 6f;
 
@@ -55,12 +55,12 @@ namespace RPG.Movement
             navMeshAgent.isStopped = true;
         }
 
-        /*[System.Serializable]
+        [System.Serializable]
         private struct MoverSaveData
         {
             public SerializableVector3 position;
             public SerializableVector3 rotation;
-        }
+        } 
 
         public object CaptureState()
         {
@@ -75,10 +75,8 @@ namespace RPG.Movement
         {
             MoverSaveData data = (MoverSaveData)state;
 
-            navMeshAgent.enabled = false;
-            transform.position = data.position.ToVector();
+            navMeshAgent.Warp(data.position.ToVector());
             transform.eulerAngles = data.rotation.ToVector();
-            navMeshAgent.enabled = true;
-        }*/
+        }
     }
 }
