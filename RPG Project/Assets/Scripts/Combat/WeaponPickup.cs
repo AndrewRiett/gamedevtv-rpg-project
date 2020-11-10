@@ -10,7 +10,6 @@ namespace RPG.Combat
         {
             if (other.CompareTag("Player"))
             {
-                Debug.Log("Collision");
                 other.GetComponent<Fighter>().EquipWeapon(weaponToEquip);
                 Destroy(gameObject);
             }

@@ -75,12 +75,26 @@ namespace RPG.Combat
             animator.SetTrigger("attack");
         }
 
+        // animation Event 
         void Hit()
         {
             if (target == null) return;
-            target.takeDamage(currentWeapon.GetWeaponDamage());
+            
+            if (currentWeapon.HasProjectTile())
+            {
+                currentWeapon.LaunchProjectile(rightHandTransform, leftHandTransform, target);
+            }
+            else
+            {
+                target.takeDamage(currentWeapon.GetWeaponDamage());
+            }
         }
 
+        // animation Event 
+        void Shoot()
+        {
+            Hit();
+        }
         private bool GetIsInRange()
         {
             return Vector3.Distance(transform.position, target.transform.position) < currentWeapon.GetWeaponRange();
