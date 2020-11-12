@@ -1,4 +1,5 @@
-﻿using RPG.Core;
+﻿using System;
+using RPG.Core;
 using UnityEngine;
 
 namespace RPG.Combat
@@ -13,6 +14,8 @@ namespace RPG.Combat
         [SerializeField] bool isRightHanded = true;
         [SerializeField] Projectile projectile = null;
 
+        const string weaponName = "Weapon";
+
         /// <summary>
         /// Instantiates the weapon on the particular Transform position and overrides the animation.
         /// </summary>
@@ -20,20 +23,30 @@ namespace RPG.Combat
         /// <param name="animator"></param>
         public void Spawn(Transform rightHand, Transform leftHand, Animator animator)
         {
+            DestroyOldWeapon(rightHand, leftHand);
+
             if (equippedPrefab != null)
             {
-                Instantiate(equippedPrefab, ChooseHand(leftHand, rightHand));
+                GameObject weapon = Instantiate(equippedPrefab, ChooseHand(leftHand, rightHand));
+                weapon.name = weaponName;
             }
+
+            // casting, if result is false, then return null
+            var overrideController = animator.runtimeAnimatorController as AnimatorOverrideController;
             if (animatorOverride != null)
             {
                 animator.runtimeAnimatorController = animatorOverride; // overriding the animator in runtime
+            }
+            else if (overrideController != null) // if the animator was overriden (not null), returns it to the default state
+            {
+                animator.runtimeAnimatorController = overrideController.runtimeAnimatorController;  // override is a child of animator, so it posesses the animator runtime default state
             }
         }
 
         public void LaunchProjectile(Transform rightHand, Transform leftHand, Health target)
         {
             Projectile projectileInstance = Instantiate(projectile, ChooseHand(rightHand, leftHand).position, Quaternion.identity);
-            
+
             projectileInstance.SetTarget(target, weaponDamage);
         }
 
@@ -54,6 +67,21 @@ namespace RPG.Combat
         public float GetWeaponDamage()
         {
             return this.weaponDamage;
+        }
+
+        private void DestroyOldWeapon(Transform rightHand, Transform leftHand)
+        {
+            Transform oldWeapon = rightHand.Find(weaponName);
+
+            if (oldWeapon == null)
+            {
+                oldWeapon = leftHand.Find(weaponName);
+            }
+            if (oldWeapon == null) return;
+
+            oldWeapon.name = "DESTROYING";
+            Destroy(oldWeapon.gameObject);
+
         }
     }
 }
