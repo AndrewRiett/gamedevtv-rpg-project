@@ -2,6 +2,7 @@
 using RPG.Movement;
 using RPG.Core;
 using RPG.Saving;
+using RPG.Resources;
 
 namespace RPG.Combat
 {
@@ -70,6 +71,11 @@ namespace RPG.Combat
             weapon.Spawn(rightHandTransform, leftHandTransform, animator);
         }
 
+        public Health GetTarget()
+        {
+            return target;
+        }
+
         private void TriggerAttack()
         {
             animator.ResetTrigger("stopAttack");
@@ -130,7 +136,7 @@ namespace RPG.Combat
         public void RestoreState(object state)
         {
             string weaponName = (string)state;
-            Weapon weapon = Resources.Load<Weapon>(weaponName);   // looks for a resource in resource folder that has the type of Weapon and the given name
+            Weapon weapon = UnityEngine.Resources.Load<Weapon>(weaponName);   // looks for a resource in resource folder that has the type of Weapon and the given name
             EquipWeapon(weapon); 
         }
 

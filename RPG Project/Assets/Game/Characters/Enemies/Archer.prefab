@@ -11,6 +11,10 @@ PrefabInstance:
       propertyPath: healthPoints
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 4019945202500038346, guid: db25b9ddc371dd44e8e125eca405b414, type: 3}
+      propertyPath: characterType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4070137405334861017, guid: db25b9ddc371dd44e8e125eca405b414, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

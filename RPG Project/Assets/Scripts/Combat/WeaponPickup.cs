@@ -33,6 +33,6 @@ namespace RPG.Combat
             {
                 child.gameObject.SetActive(state);
             }
-        }
+         }
     }
 }
