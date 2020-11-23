@@ -17,13 +17,12 @@ namespace RPG.Movement
         void Awake()
         {
             health = GetComponent<Health>();
-            animator = GetComponent<Animator>();
             navMeshAgent = GetComponent<NavMeshAgent>();
+            animator = GetComponent<Animator>();
         }
 
         void Update()
         {
-            
             navMeshAgent.enabled = !health.IsDead(); // to prevent stopping player by dead bodies
             UpdateAnimator();
         }
@@ -74,8 +73,9 @@ namespace RPG.Movement
         public void RestoreState(object state)
         {
             MoverSaveData data = (MoverSaveData)state;
-
-            navMeshAgent.Warp(data.position.ToVector());
+   
+            // navMesh is called directly to prevent race condition
+            navMeshAgent.Warp(data.position.ToVector()); 
             transform.eulerAngles = data.rotation.ToVector();
         }
     }

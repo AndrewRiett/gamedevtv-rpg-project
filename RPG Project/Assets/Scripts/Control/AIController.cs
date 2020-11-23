@@ -2,6 +2,7 @@
 using RPG.Core;
 using RPG.Movement;
 using RPG.Resources;
+using RPG.Utilities;
 using UnityEngine;
 
 namespace RPG.Control
@@ -18,12 +19,11 @@ namespace RPG.Control
         [SerializeField] float waypointToleranceDistance = 1f;
         [SerializeField] float waypointDwellTime = 3f;
 
-        GameObject player;
-        Health health;
-        Fighter fighter;
-        Mover mover;
-
-        Vector3 guardPosition;
+        private GameObject player;
+        private Health health;
+        private Fighter fighter;
+        private Mover mover;
+        private LazyValue<Vector3> guardPosition;
 
         bool wasAggrevated = false;
         float timeSinceLastSawPlayer = Mathf.Infinity;
@@ -32,12 +32,16 @@ namespace RPG.Control
 
         private void Awake()
         {
+            guardPosition = new LazyValue<Vector3>(GetGuardPosition);
             player = GameObject.FindWithTag("Player");
             health = GetComponent<Health>();
             fighter = GetComponent<Fighter>();
             mover = GetComponent<Mover>();
+        }
 
-            guardPosition = transform.position;
+        private void Start()
+        {
+            guardPosition.ForceInit();
         }
 
         private void Update()
@@ -69,7 +73,7 @@ namespace RPG.Control
 
         private void PatrolBehaviour()
         {
-            Vector3 nextPosition = guardPosition;
+            Vector3 nextPosition = guardPosition.value;
 
             if (patrolPath != null)
             {
@@ -86,7 +90,7 @@ namespace RPG.Control
 
             if (timeSinceLastWaypoint >= waypointDwellTime)
             {
-                mover.StartMoveAction(nextPosition, wasAggrevated? 1f : patrolSpeedFraction);
+                mover.StartMoveAction(nextPosition, wasAggrevated ? 1f : patrolSpeedFraction);
             }
         }
 
@@ -124,6 +128,11 @@ namespace RPG.Control
         {
             float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
             return (distanceToPlayer <= chaseDistance);
+        }
+
+        private Vector3 GetGuardPosition()
+        {
+            return transform.position;
         }
 
         // called by Unity

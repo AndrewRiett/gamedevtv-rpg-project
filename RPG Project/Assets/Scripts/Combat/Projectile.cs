@@ -12,7 +12,9 @@ namespace RPG.Combat
         [Space]
         [SerializeField] GameObject[] destroyOnHit = null; // for making some objects of projectile to destroy immediatly
         [SerializeField] float lifeAfterImpact = 0.4f; // time to destroy other objects, like particle effects
+        
         private Health target = null;
+        private GameObject instigator;
         private float damage = 0f;
 
         private void Start()
@@ -25,23 +27,23 @@ namespace RPG.Combat
         {
             if (target == null) return;
 
-
             if (isHoming && !target.IsDead()) transform.LookAt(GetAimLocation()); // for making an arrow to always follow a target
             transform.Translate(Vector3.forward * speed * Time.deltaTime);
         }
 
-        public void SetTarget(Health target, float damage)
+        public void SetTarget(Health target, GameObject instigator, float damage)
         {
             this.target = target;
+            this.instigator = instigator;
             this.damage = damage;
         }
-
+        
         private void OnTriggerEnter(Collider other)
         {
             if (other.GetComponent<Health>() != target) return;
             if (target.IsDead()) return;
             
-            target.takeDamage(damage);
+            target.takeDamage(instigator, damage);
 
             speed = 0f;
 

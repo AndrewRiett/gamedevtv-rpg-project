@@ -8,8 +8,10 @@ namespace RPG.Cinematics
     {
         [SerializeField] bool alreadyTriggered = false;
 
-        private void Update() {
-            if (Input.GetKeyDown(KeyCode.Escape)) {
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
                 GetComponent<PlayableDirector>().Stop();
             }
         }
@@ -28,7 +30,7 @@ namespace RPG.Cinematics
         }
 
         public void RestoreState(object state)
-        { 
+        {
             alreadyTriggered = (bool)state;
         }
     }

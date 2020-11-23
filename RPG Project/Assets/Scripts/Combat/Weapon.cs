@@ -10,6 +10,7 @@ namespace RPG.Combat
         [SerializeField] GameObject equippedPrefab = null;
         [SerializeField] AnimatorOverrideController animatorOverride = null;
         [SerializeField] float weaponDamage = 5f;
+        [SerializeField] float percentageBonus = 0f;
         [SerializeField] float weaponRange = 2f;
         [SerializeField] bool isRightHanded = true;
         [SerializeField] Projectile projectile = null;
@@ -43,11 +44,11 @@ namespace RPG.Combat
             }
         }
 
-        public void LaunchProjectile(Transform rightHand, Transform leftHand, Health target)
+        public void LaunchProjectile(Transform rightHand, Transform leftHand, Health target, 
+            GameObject instigator, float calculatedDamage)
         {
             Projectile projectileInstance = Instantiate(projectile, ChooseHand(rightHand, leftHand).position, Quaternion.identity);
-
-            projectileInstance.SetTarget(target, weaponDamage);
+            projectileInstance.SetTarget(target, instigator, calculatedDamage);
         }
 
         public Transform ChooseHand(Transform leftHand, Transform rightHand)
@@ -60,13 +61,19 @@ namespace RPG.Combat
             return projectile != null;
         }
 
-        public float GetWeaponRange()
+        public float GetRange()
         {
             return this.weaponRange;
         }
-        public float GetWeaponDamage()
+
+        public float GetDamage()
         {
             return this.weaponDamage;
+        }
+
+        public float GetPercentageBonus()
+        {
+            return this.percentageBonus;
         }
 
         private void DestroyOldWeapon(Transform rightHand, Transform leftHand)
@@ -81,7 +88,6 @@ namespace RPG.Combat
 
             oldWeapon.name = "DESTROYING";
             Destroy(oldWeapon.gameObject);
-
         }
     }
 }

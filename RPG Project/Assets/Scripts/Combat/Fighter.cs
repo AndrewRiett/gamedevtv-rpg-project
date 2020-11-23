@@ -3,10 +3,13 @@ using RPG.Movement;
 using RPG.Core;
 using RPG.Saving;
 using RPG.Resources;
+using RPG.Stats;
+using System.Collections.Generic;
+using RPG.Utilities;
 
 namespace RPG.Combat
 {
-    public class Fighter : MonoBehaviour, IAction, ISaveable
+    public class Fighter : MonoBehaviour, IAction, ISaveable, IModifierProvider
     {
         [SerializeField] float timeBetweenAttacks = 1f;
 
@@ -17,20 +20,21 @@ namespace RPG.Combat
         [SerializeField] Weapon defaultWeapon = null;
 
         private float timeSinceLastAttack = Mathf.Infinity;
-        private Weapon currentWeapon = null;
+        private LazyValue<Weapon> currentWeapon;
         private Animator animator;
         private Health target;
         private Mover mover;
 
         private void Awake()
         {
+            currentWeapon = new LazyValue<Weapon>(SetupDefaultWeapon);
             animator = GetComponent<Animator>();
             mover = GetComponent<Mover>();
         }
 
         private void Start()
         {
-            if (currentWeapon == null) EquipWeapon(defaultWeapon);
+            currentWeapon.ForceInit();
         }
 
         private void Update()
@@ -65,8 +69,18 @@ namespace RPG.Combat
 
         public void EquipWeapon(Weapon weapon)
         {
-            currentWeapon = weapon;
+            currentWeapon.value = weapon;
+            AttachWeapon(weapon);
+        }
 
+        private Weapon SetupDefaultWeapon()
+        {
+            AttachWeapon(defaultWeapon);
+            return defaultWeapon;
+        }
+
+        private void AttachWeapon(Weapon weapon)
+        {
             Animator animator = GetComponent<Animator>();
             weapon.Spawn(rightHandTransform, leftHandTransform, animator);
         }
@@ -86,14 +100,17 @@ namespace RPG.Combat
         void Hit()
         {
             if (target == null) return;
-            
-            if (currentWeapon.HasProjectTile())
+
+            float damage = GetComponent<BaseStats>().GetStat(StatType.Damage);
+
+            if (currentWeapon.value.HasProjectTile())
             {
-                currentWeapon.LaunchProjectile(rightHandTransform, leftHandTransform, target);
+                currentWeapon.value.LaunchProjectile(rightHandTransform, leftHandTransform,
+                    target, gameObject, damage);
             }
             else
             {
-                target.takeDamage(currentWeapon.GetWeaponDamage());
+                target.takeDamage(gameObject, damage);
             }
         }
 
@@ -104,7 +121,7 @@ namespace RPG.Combat
         }
         private bool GetIsInRange()
         {
-            return Vector3.Distance(transform.position, target.transform.position) < currentWeapon.GetWeaponRange();
+            return Vector3.Distance(transform.position, target.transform.position) < currentWeapon.value.GetRange();
         }
 
         public void Attack(GameObject combatTarget)
@@ -119,8 +136,8 @@ namespace RPG.Combat
 
             Health targetToTest = combatTarget.GetComponent<Health>();
             return (targetToTest != null && !targetToTest.IsDead());
-
         }
+
         public void Cancel()
         {
             StopAttack();
@@ -128,16 +145,34 @@ namespace RPG.Combat
             GetComponent<Mover>().Cancel(); // to cancel the movement as well
         }
 
-          public object CaptureState()
+        public IEnumerable<float> GetAdditiveModifiers(StatType statType)
         {
-            return currentWeapon.name;
+            if (statType == StatType.Damage)
+            {
+                // returns only if there is damage weapon stat, otherwise returns an empty list
+                yield return currentWeapon.value.GetDamage();
+                // yield return ... for other modifiers (if exist)
+            }
+        }
+
+        public IEnumerable<float> GetAdditivePercentages(StatType statType)
+        {
+            if (statType == StatType.Damage)
+            {
+                yield return currentWeapon.value.GetPercentageBonus();
+            }
+        }
+
+        public object CaptureState()
+        {
+            return currentWeapon.value.name;
         }
 
         public void RestoreState(object state)
         {
             string weaponName = (string)state;
             Weapon weapon = UnityEngine.Resources.Load<Weapon>(weaponName);   // looks for a resource in resource folder that has the type of Weapon and the given name
-            EquipWeapon(weapon); 
+            EquipWeapon(weapon);
         }
 
         private void StopAttack()
