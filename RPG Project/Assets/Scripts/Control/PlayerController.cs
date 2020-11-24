@@ -2,27 +2,33 @@
 using RPG.Movement;
 using RPG.Combat;
 using RPG.Resources;
+using System;
 
 namespace RPG.Control
 {
     public class PlayerController : MonoBehaviour
     {
-        Health health;
-        Mover mover;
-        Fighter fighter;
+        private Health health;
+        private Mover mover;
+        private Fighter fighter;
+        private CursorManager cursorManager;
 
         void Awake()
         {
             health = GetComponent<Health>();
             mover = GetComponent<Mover>();
             fighter = GetComponent<Fighter>();
+            cursorManager = GetComponent<CursorManager>();
         }
 
         void Update()
         {
             if (health.IsDead()) return;
-            if (InteractWithCombat()) return; 
-            if (InteractWithMovement()) return; 
+
+            if (InteractWithCombat()) return;
+            if (InteractWithMovement()) return;
+
+            cursorManager.SetCursor(CursorType.Default);
         }
 
         private bool InteractWithCombat()
@@ -39,6 +45,7 @@ namespace RPG.Control
                 {
                     fighter.Attack(target.gameObject);
                 }
+                cursorManager.SetCursor(Control.CursorType.Combat);
                 return true; // used here for hovering mouse over an enemy and changing the cursore icon (cursor affordance)
             }
             return false;
@@ -56,12 +63,11 @@ namespace RPG.Control
                     mover.StartMoveAction(hitInfo.point);
 
                 }
-                // Debug.DrawLine(GetMouseRay().origin, GetMouseRay().direction, Color.white);
+                cursorManager.SetCursor(CursorType.Movement);
                 return true; // used here for hovering mouse over an enemy and changing the cursore icon (cursor affordance)
             }
             return false;
         }
-
         private static Ray GetMouseRay()
         {
             return Camera.main.ScreenPointToRay(Input.mousePosition);
