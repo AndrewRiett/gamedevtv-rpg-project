@@ -60,7 +60,7 @@ namespace RPG.Stats
 #pragma warning restore 0649
             public ProgressionStat[] stats = null;
         }
-
+        
         [System.Serializable]
         class ProgressionStat
         {

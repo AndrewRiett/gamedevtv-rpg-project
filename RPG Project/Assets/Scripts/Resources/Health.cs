@@ -35,8 +35,6 @@ namespace RPG.Resources
 
         public void takeDamage(GameObject instigator, float damage)
         {
-            Debug.Log($"{gameObject.name} took {damage} damage");
-
             // for making sure that health is >= 0
             healthPoints.value = Mathf.Max(healthPoints.value - damage, 0);
 

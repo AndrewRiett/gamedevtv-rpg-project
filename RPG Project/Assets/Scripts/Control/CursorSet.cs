@@ -3,11 +3,13 @@ using UnityEngine;
 
 namespace RPG.Control
 {
-    public class CursorManager : MonoBehaviour
+    [CreateAssetMenu(fileName = "Cursor Set", menuName = "Cursors/New Cursor Set", order = 0)]
+    public class CursorSet : ScriptableObject
     {
         [SerializeField] private CursorMapping[] cursorMappings = null;
 
 #pragma warning disable 0649 // to avoid unity never assigned default value error
+        
         [System.Serializable]
         private struct CursorMapping
         {
@@ -20,7 +22,7 @@ namespace RPG.Control
 
         private Dictionary<CursorType, CursorMapping> cursorDict = null;
 
-        private void Awake()
+        private void OnEnable() 
         {
             BuildDictionary();
         }
@@ -28,11 +30,13 @@ namespace RPG.Control
         public void SetCursor(CursorType cursorType)
         {
             CursorMapping cursor = GetCursorMapping(cursorType);
-            Cursor.SetCursor(cursor.texture, cursor.hotspot, CursorMode.Auto);
+            Cursor.SetCursor(cursor.texture, cursor.hotspot, CursorMode.Auto); // Unity Cursor API
         }
 
         private void BuildDictionary()
         {
+            if (cursorDict != null) return;
+
             if (cursorMappings != null)
             {
                 cursorDict = new Dictionary<CursorType, CursorMapping>();
@@ -50,6 +54,7 @@ namespace RPG.Control
             {
                 return cursorDict[type];
             }
+
             Debug.LogError("Cursor type is not found, returning the default variant");
             return cursorMappings[0]; // TODO: might throw null exeptions if cursorMappings == null; 
         }

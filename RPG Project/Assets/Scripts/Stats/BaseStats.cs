@@ -76,8 +76,6 @@ namespace RPG.Stats
             return value * percentage;
         }
 
-
-
         public int GetLevel()
         {
             return currentLevel.value;

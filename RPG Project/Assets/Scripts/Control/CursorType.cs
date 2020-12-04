@@ -5,5 +5,7 @@ namespace RPG.Control
             Default,
             Movement,
             Combat,
+            UI,
+            Pickup,
         }
 }
