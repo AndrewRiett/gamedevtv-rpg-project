@@ -1,5 +1,5 @@
 using UnityEngine;
-using RPG.Resources;
+using RPG.Attributes;
 
 namespace RPG.Combat
 {
@@ -8,7 +8,7 @@ namespace RPG.Combat
         [SerializeField] GameObject hitEffect = null;
         [SerializeField] private bool isHoming = false; // whether a projectile should follow the target
         [SerializeField] private float speed = 1f;
-        [SerializeField] private float maxLifeTime = 10f;
+        [SerializeField] private float maxLifeTime = 5f;
         [Space]
         [SerializeField] GameObject[] destroyOnHit = null; // for making some objects of projectile to destroy immediatly
         [SerializeField] float lifeAfterImpact = 0.4f; // time to destroy other objects, like particle effects

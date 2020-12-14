@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using RPG.Movement;
-using RPG.Resources;
+using RPG.Attributes;
 using System;
 using UnityEngine.EventSystems;
 using UnityEngine.AI;
@@ -101,6 +101,8 @@ namespace RPG.Control
 
             if (!hasHit) return false; // return early if there is no raycastHit
 
+
+            // NavMesh
             // find the nearest navMesh hit within the range of maxNavMeshProjectionDistance
             // on a RaycastHit point and stores it to the navMeshHit
             NavMeshHit navMeshHit;
@@ -111,6 +113,8 @@ namespace RPG.Control
 
             targetPosition = navMeshHit.position; // assign a position if found
 
+
+            //NavMesh path
             NavMeshPath path = new NavMeshPath(); // out variable, 
             bool hasPath = NavMesh.CalculatePath(transform.position, targetPosition, NavMesh.AllAreas, path);
 
@@ -130,9 +134,6 @@ namespace RPG.Control
 
             for (int i = 0; i < pathCorners.Length-1; i++)
             {
-                Debug.Log($"{i}: {pathCorners[i]}, {i+1}: {pathCorners[i + 1]}");
-                Debug.Log($"total = {total}");
-
                 total += Vector3.Distance(pathCorners[i], pathCorners[i + 1]);
             }
 

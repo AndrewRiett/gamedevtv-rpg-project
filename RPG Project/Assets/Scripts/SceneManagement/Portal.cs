@@ -42,30 +42,44 @@ namespace RPG.SceneManagement
                 yield break;
             }
 
-            DontDestroyOnLoad(gameObject); // in order to transfer the portal in another scene and execute its functionality
+            // in order to transfer the portal in another scene and execute its functionality
+            DontDestroyOnLoad(gameObject); 
+
 
             Fader fader = FindObjectOfType<Fader>();
 
-            yield return fader.FadeOut(fadeOutTime); // fades the screen before loading
+            // removes control from the player
+            PlayerController playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+            playerController.enabled = false;
+
+
+            // fades the screen before loading
+            yield return fader.FadeOut(fadeOutTime);
 
             SavingWrapper sWrapper = FindObjectOfType<SavingWrapper>();
             sWrapper.Save(); // saves the current scene state
 
-            yield return SceneManager.LoadSceneAsync(sceneToLoadIndex); // async. loads the scene 
-            
-            sWrapper.Load(); // load the current scene state
+            // async. loads the scene
+            yield return SceneManager.LoadSceneAsync(sceneToLoadIndex);
+
+            // removes control from the player twice, because the new player will be loaded
+            PlayerController newPlayerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+            newPlayerController.enabled = false;
+
+
+            // load the current scene state
+            sWrapper.Load(); 
             
             // configure player position while fadeOut() 
             Portal otherPortal = GetOtherPortal();
             UpdatePlayer(otherPortal);
 
             sWrapper.Save(); // saves as a checkpoint after loading the location
+            
+            yield return new WaitForSeconds(fadeWaitTime); // waits in fadeOut() after the configuration in order to give time for camera and etc. to stabilize
+            fader.FadeIn(fadeInTime); // fades in after everything is done
 
-            // waits in fadeOut() after the configuration in order to give time for camera and etc. to stabilize
-            yield return new WaitForSeconds(fadeWaitTime);
-
-            yield return fader.FadeIn(fadeInTime); // fades in after everything is done
-
+            newPlayerController.enabled = true;
             Destroy(gameObject);
         }
 
@@ -73,13 +87,9 @@ namespace RPG.SceneManagement
         {
             GameObject player = GameObject.FindWithTag("Player");
 
-            player.GetComponent<PlayerController>().enabled = false;
-
             // NavMeshAgent.Warp() used in order to prevent conflicts with AI system;
             player.GetComponent<NavMeshAgent>().Warp(otherPortal.spawnPoint.transform.position);
             player.transform.rotation = otherPortal.spawnPoint.transform.rotation;
-
-            player.GetComponent<PlayerController>().enabled = true;
         }
         private Portal GetOtherPortal()
         {

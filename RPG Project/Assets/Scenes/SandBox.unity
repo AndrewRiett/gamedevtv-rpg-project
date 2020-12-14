@@ -2052,7 +2052,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 676198329}
-  m_LocalRotation: {x: 0.022406952, y: 0.9589631, z: -0.07919522, w: 0.2713225}
+  m_LocalRotation: {x: 0.022406965, y: 0.95896304, z: -0.07919521, w: 0.27132264}
   m_LocalPosition: {x: 11.912883, y: 10.856108, z: 0.5281501}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -4879,7 +4879,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1480377350}
-  m_LocalRotation: {x: 0.06698134, y: 0.58662754, z: -0.048774518, w: 0.8056071}
+  m_LocalRotation: {x: 0.06696658, y: 0.58687115, z: -0.04879477, w: 0.80542964}
   m_LocalPosition: {x: -16.38, y: 1.13, z: 2.32}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -7212,6 +7212,18 @@ PrefabInstance:
     - target: {fileID: 1934191071330198401, guid: aad962696a58fa44c8dd9abb43b9d086, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 12.799988
+      objectReference: {fileID: 0}
+    - target: {fileID: 2856077534341282791, guid: aad962696a58fa44c8dd9abb43b9d086, type: 3}
+      propertyPath: onDamage.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_FloatArgument
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2856077534341282791, guid: aad962696a58fa44c8dd9abb43b9d086, type: 3}
+      propertyPath: onDamage.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Spawn
+      objectReference: {fileID: 0}
+    - target: {fileID: 2856077534341282791, guid: aad962696a58fa44c8dd9abb43b9d086, type: 3}
+      propertyPath: onDamage.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3038299483309585193, guid: aad962696a58fa44c8dd9abb43b9d086, type: 3}
       propertyPath: m_RootOrder

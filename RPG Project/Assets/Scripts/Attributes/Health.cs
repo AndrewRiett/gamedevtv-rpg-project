@@ -3,16 +3,19 @@ using RPG.Saving;
 using RPG.Stats;
 using RPG.Utilities;
 using UnityEngine;
+using UnityEngine.Events;
 
-namespace RPG.Resources
+namespace RPG.Attributes
 {
     public class Health : MonoBehaviour, ISaveable
     {
+        [SerializeField] public UnityEvent<float> onDamage;
+
         private LazyValue<float> healthPoints;
         private BaseStats baseStats;
         private bool isDead = false;
 
-        private void Awake()
+        private void Awake() 
         {
             baseStats = GetComponent<BaseStats>();
             healthPoints = new LazyValue<float>(GetInitialHealth);
@@ -35,8 +38,8 @@ namespace RPG.Resources
 
         public void takeDamage(GameObject instigator, float damage)
         {
-            // for making sure that health is >= 0
-            healthPoints.value = Mathf.Max(healthPoints.value - damage, 0);
+            healthPoints.value = Mathf.Max(healthPoints.value - damage, 0); // Mathf.Max for making sure that health is >= 0
+            onDamage.Invoke(damage);
 
             if (healthPoints.value == 0f && !IsDead())
             {
@@ -47,7 +50,12 @@ namespace RPG.Resources
 
         public float GetHealthPercentage()
         {
-            return 100f * (healthPoints.value / baseStats.GetStat(StatType.Health));
+            return 100f * GetHealthFraction();
+        }
+
+        public float GetHealthFraction()
+        {
+            return healthPoints.value / baseStats.GetStat(StatType.Health);
         }
 
         public bool IsDead()
