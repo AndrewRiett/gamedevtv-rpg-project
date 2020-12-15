@@ -86,7 +86,7 @@ namespace RPG.Control
                     mover.StartMoveAction(targetPosition);
                 }
                 cursorSet.SetCursor(CursorType.Movement);
-                return true; // used here for hovering mouse over an enemy and changing the cursore icon (cursor affordance)
+                return true;
             }
             return false;
         }

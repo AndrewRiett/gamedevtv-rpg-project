@@ -1,20 +1,20 @@
-using RPG.Control;
-using System;
+﻿using UnityEngine;
 using System.Collections;
-using UnityEngine;
+using RPG.Control;
+using RPG.Movement;
 
-namespace RPG.Combat
+namespace RPG.Combat.Pickups
 {
-    public class WeaponPickup : MonoBehaviour, IRaycastable
+    public class PickUp : MonoBehaviour, IRaycastable
     {
-        [SerializeField] WeaponConfig weaponToEquip = null;
         [SerializeField] float respawnTime = 5f;
 
         public bool HandleRaycast(PlayerController callingController)
         {
             if (Input.GetMouseButtonDown(0))
             {
-                Pickup(callingController.GetComponent<Fighter>());
+                callingController.GetComponent<Mover>().MoveTo(transform.position);
+                //Pickup(callingController.gameObject);
             }
             return true;
         }
@@ -23,13 +23,12 @@ namespace RPG.Combat
         {
             if (other.CompareTag("Player"))
             {
-                Pickup(other.GetComponent<Fighter>());
+                Pickup(other.gameObject);
             }
         }
 
-        private void Pickup(Fighter fighter)
+        protected virtual void Pickup(GameObject subject)
         {
-            fighter.EquipWeapon(weaponToEquip);
             StartCoroutine(RespawnAfterTime(respawnTime));
         }
 
@@ -53,5 +52,6 @@ namespace RPG.Combat
         {
             return CursorType.Pickup;
         }
+
     }
 }

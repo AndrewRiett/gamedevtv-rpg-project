@@ -10,7 +10,6 @@ namespace RPG.Sounds
 
         public void Play()
         {
-            Debug.Log("PlaySound");
             ChooseSound(sounds).Play();
         }
 
