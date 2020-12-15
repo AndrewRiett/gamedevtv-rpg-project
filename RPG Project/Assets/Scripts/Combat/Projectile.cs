@@ -1,5 +1,6 @@
 using UnityEngine;
 using RPG.Attributes;
+using UnityEngine.Events;
 
 namespace RPG.Combat
 {
@@ -9,10 +10,14 @@ namespace RPG.Combat
         [SerializeField] private bool isHoming = false; // whether a projectile should follow the target
         [SerializeField] private float speed = 1f;
         [SerializeField] private float maxLifeTime = 5f;
+        
         [Space]
         [SerializeField] GameObject[] destroyOnHit = null; // for making some objects of projectile to destroy immediatly
         [SerializeField] float lifeAfterImpact = 0.4f; // time to destroy other objects, like particle effects
-        
+
+        [Space]
+        [SerializeField] UnityEvent onHit = null;
+
         private Health target = null;
         private GameObject instigator;
         private float damage = 0f;
@@ -43,7 +48,10 @@ namespace RPG.Combat
             if (other.GetComponent<Health>() != target) return;
             if (target.IsDead()) return;
             
+            onHit.Invoke();
             target.takeDamage(instigator, damage);
+            
+            GetComponent<Collider>().enabled = false;
 
             speed = 0f;
 

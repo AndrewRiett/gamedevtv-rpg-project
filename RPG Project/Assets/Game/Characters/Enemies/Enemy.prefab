@@ -226,6 +226,10 @@ PrefabInstance:
       propertyPath: leftHandTransform
       value: 
       objectReference: {fileID: 4220045433898906539}
+    - target: {fileID: -9107389748822862482, guid: 958d2bc26f2a7e64982c9006878bd46a, type: 3}
+      propertyPath: timeBetweenAttacks
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: -2630034114953021616, guid: 958d2bc26f2a7e64982c9006878bd46a, type: 3}
       propertyPath: maxSpeed
       value: 4
@@ -236,7 +240,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4296359777225312180, guid: 958d2bc26f2a7e64982c9006878bd46a, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5738623570061709536, guid: 958d2bc26f2a7e64982c9006878bd46a, type: 3}
       propertyPath: m_Speed

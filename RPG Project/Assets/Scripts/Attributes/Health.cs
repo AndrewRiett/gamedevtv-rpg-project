@@ -10,6 +10,7 @@ namespace RPG.Attributes
     public class Health : MonoBehaviour, ISaveable
     {
         [SerializeField] public UnityEvent<float> onDamage;
+        [SerializeField] public UnityEvent onDie = null;
 
         private LazyValue<float> healthPoints;
         private BaseStats baseStats;
@@ -44,6 +45,7 @@ namespace RPG.Attributes
             if (healthPoints.value == 0f && !IsDead())
             {
                 Die();
+                onDie.Invoke();
                 AwardExperiance(instigator);
             }
         }

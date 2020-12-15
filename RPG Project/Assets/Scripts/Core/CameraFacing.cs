@@ -8,6 +8,5 @@ namespace RPG.Core
         {
             transform.forward = Camera.main.transform.forward;
         }
-
     }
 }

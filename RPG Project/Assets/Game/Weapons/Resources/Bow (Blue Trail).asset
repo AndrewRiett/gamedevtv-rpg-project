@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5132aceaec1662b46895fb28889f1b49, type: 3}
   m_Name: Bow (Blue Trail)
   m_EditorClassIdentifier: 
-  equippedPrefab: {fileID: 5470816247469163598, guid: 004d61956a6cdaa4c849bc9b1b2beaa3, type: 3}
+  equippedPrefab: {fileID: -8498487397831986728, guid: 004d61956a6cdaa4c849bc9b1b2beaa3, type: 3}
   animatorOverride: {fileID: 22100000, guid: 2ea2ffabdd15f1446a7220503ce716f4, type: 2}
   weaponDamage: 0
   percentageBonus: 20
