@@ -4,17 +4,23 @@ using RPG.Movement;
 using RPG.Attributes;
 using RPG.Utilities;
 using UnityEngine;
+using System;
 
 namespace RPG.Control
 {
     public class AIController : MonoBehaviour
     {
-        [Range(0, 1)] // the fraction could only be withing the range [0, 1)
-        [SerializeField] float patrolSpeedFraction = 0.2f; // % of maxSpeed in Mover
+
         [SerializeField] float chaseDistance = 5f;
-        [SerializeField] float suspicionTime = 5f;
+        [SerializeField] float alliesAggroDistance = 5f;
 
         [Space]
+        [SerializeField] float suspicionTime = 5f;
+        [SerializeField] float aggrevationCooldown = 5f;
+
+        [Space]
+        [Range(0, 1)] // the fraction could only be withing the range [0, 1)
+        [SerializeField] float patrolSpeedFraction = 0.2f; // % of maxSpeed in Mover
         [SerializeField] PatrolPath patrolPath = null;
         [SerializeField] float waypointToleranceDistance = 1f;
         [SerializeField] float waypointDwellTime = 3f;
@@ -26,8 +32,10 @@ namespace RPG.Control
         private LazyValue<Vector3> guardPosition;
 
         bool wasAggrevated = false;
+        bool wasAggrevatedByFriend = false;
         float timeSinceLastSawPlayer = Mathf.Infinity;
         float timeSinceLastWaypoint = Mathf.Infinity;
+        float timeSinceAggrevation = Mathf.Infinity;
         int currentWaypointIndex = 0;
 
         private void Awake()
@@ -51,7 +59,7 @@ namespace RPG.Control
             UpdateTimers();
 
             // CanAttack is checked here because it is needed to know whether player's health is > 0
-            if (InAttackRangeOfPlayer() && fighter.CanAttack(player)) // attack state
+            if (IsAggrevated() && fighter.CanAttack(player)) // attack state
             {
                 AttackBehaviour();
             }
@@ -65,10 +73,32 @@ namespace RPG.Control
             }
         }
 
+        public void Aggrevate() // used by UnityEvent
+        {
+            timeSinceAggrevation = 0f;
+        }
+        public void AggrevateByAlly() // used by UnityEvent
+        {
+            if (wasAggrevatedByFriend) return;
+
+            if (!wasAggrevatedByFriend)
+            {
+                timeSinceAggrevation = 0f;
+                timeSinceLastSawPlayer = 0f;
+                timeSinceAggrevation = 0f;
+                wasAggrevatedByFriend = true;
+            }
+
+        }
+
         private void UpdateTimers()
         {
             timeSinceLastSawPlayer += Time.deltaTime;
             timeSinceLastWaypoint += Time.deltaTime;
+            timeSinceAggrevation += Time.deltaTime;
+
+            if (timeSinceAggrevation >= aggrevationCooldown && timeSinceLastSawPlayer >= suspicionTime)
+                wasAggrevatedByFriend = false;
         }
 
         private void PatrolBehaviour()
@@ -82,7 +112,6 @@ namespace RPG.Control
                     wasAggrevated = false;
                     timeSinceLastWaypoint = 0f;
                     CycleWaypoint();
-
                 }
 
                 nextPosition = GetCurrentWaypoint();
@@ -99,7 +128,6 @@ namespace RPG.Control
             float distanceToWaypoint = Vector3.Distance(transform.position, GetCurrentWaypoint());
             return distanceToWaypoint < waypointToleranceDistance;
         }
-
 
         private void CycleWaypoint()
         {
@@ -122,12 +150,29 @@ namespace RPG.Control
             timeSinceLastSawPlayer = 0f;
 
             fighter.Attack(player);
+            AggrevateNearbyEnemies();
+
         }
 
-        private bool InAttackRangeOfPlayer()
+        private void AggrevateNearbyEnemies()
+        {
+            RaycastHit[] hits = Physics.SphereCastAll(transform.position, alliesAggroDistance, Vector3.up, 0f);
+
+            foreach (RaycastHit hit in hits)
+            {
+                AIController allyAI = hit.collider.GetComponent<AIController>();
+
+                if (allyAI == null || allyAI == this) continue;
+
+                    allyAI.AggrevateByAlly();
+            }
+        }
+
+        private bool IsAggrevated()
         {
             float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-            return (distanceToPlayer <= chaseDistance);
+
+            return (distanceToPlayer <= chaseDistance) || (timeSinceAggrevation <= aggrevationCooldown);
         }
 
         private Vector3 GetGuardPosition()
@@ -138,7 +183,10 @@ namespace RPG.Control
         // called by Unity
         private void OnDrawGizmosSelected()
         {
-            Gizmos.color = Color.blue;
+            Gizmos.color = Color.white;
+            Gizmos.DrawWireSphere(transform.position, alliesAggroDistance);
+
+            Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(transform.position, chaseDistance);
         }
     }

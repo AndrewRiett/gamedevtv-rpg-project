@@ -281,6 +281,34 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 361856722669425390}
     m_Modifications:
+    - target: {fileID: 2074412211861169128, guid: 994f6a1c6a405a3488f4e116495a613d, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2074412211861169128, guid: 994f6a1c6a405a3488f4e116495a613d, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2074412211861169128, guid: 994f6a1c6a405a3488f4e116495a613d, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2074412211861169128, guid: 994f6a1c6a405a3488f4e116495a613d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2074412211861169128, guid: 994f6a1c6a405a3488f4e116495a613d, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 55.594
+      objectReference: {fileID: 0}
+    - target: {fileID: 2074412211861169128, guid: 994f6a1c6a405a3488f4e116495a613d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -34.82
+      objectReference: {fileID: 0}
+    - target: {fileID: 2074412211861169128, guid: 994f6a1c6a405a3488f4e116495a613d, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 50.514496
+      objectReference: {fileID: 0}
     - target: {fileID: 5051324968807753495, guid: 994f6a1c6a405a3488f4e116495a613d, type: 3}
       propertyPath: m_Name
       value: HUD

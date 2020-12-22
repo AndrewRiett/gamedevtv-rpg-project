@@ -23,7 +23,7 @@ namespace RPG.Combat
         private Animator animator;
         private Health target;
         private Mover mover;
-        
+
         private WeaponConfig currentWeaponConfig;
         private LazyValue<Weapon> currentWeapon;
 
@@ -48,7 +48,7 @@ namespace RPG.Combat
             if (target == null) return;
             if (target.IsDead()) return;
 
-            if (!GetIsInRange())
+            if (!GetIsInRange(target.transform))
             {
                 mover.MoveTo(target.transform.position);
             }
@@ -127,9 +127,9 @@ namespace RPG.Combat
         {
             Hit();
         }
-        private bool GetIsInRange()
+        private bool GetIsInRange(Transform targetTransform)
         {
-            return Vector3.Distance(transform.position, target.transform.position) < currentWeaponConfig.GetRange();
+            return Vector3.Distance(transform.position, targetTransform.transform.position) < currentWeaponConfig.GetRange();
         }
 
         public void Attack(GameObject combatTarget)
@@ -141,6 +141,11 @@ namespace RPG.Combat
         public bool CanAttack(GameObject combatTarget)
         {
             if (combatTarget == null) return false;
+            if (!mover.CanMoveTo(combatTarget.transform.position) &&
+                !GetIsInRange(combatTarget.transform))
+            { 
+                return false;
+            }
 
             Health targetToTest = combatTarget.GetComponent<Health>();
             return (targetToTest != null && !targetToTest.IsDead());
