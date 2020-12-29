@@ -2,15 +2,18 @@
 using System.Collections;
 using RPG.Control;
 using RPG.Movement;
+using UnityEngine.Events;
 
 namespace RPG.Combat.Pickups
 {
     public class PickUp : MonoBehaviour, IRaycastable
     {
         [SerializeField] float respawnTime = 5f;
+        [SerializeField] private UnityEvent onPickup = null;
 
         public bool HandleRaycast(PlayerController callingController)
         {
+            
             if (Input.GetMouseButtonDown(0))
             {
                 callingController.GetComponent<Mover>().MoveTo(transform.position);
@@ -24,12 +27,14 @@ namespace RPG.Combat.Pickups
             if (other.CompareTag("Player"))
             {
                 Pickup(other.gameObject);
+                onPickup.Invoke();
             }
         }
 
         protected virtual void Pickup(GameObject subject)
         {
             StartCoroutine(RespawnAfterTime(respawnTime));
+            
         }
 
         private IEnumerator RespawnAfterTime(float time)

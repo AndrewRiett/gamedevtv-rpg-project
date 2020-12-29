@@ -43,6 +43,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cursorSet: {fileID: 11400000, guid: 73ab0f51332d42443a2b08106fa037ac, type: 2}
+  maxNavMeshProjectionDistance: 1
+  raycastRadius: 1
 --- !u!114 &3757238850086280612
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,6 +108,10 @@ PrefabInstance:
     - target: {fileID: 1343937075709056890, guid: 958d2bc26f2a7e64982c9006878bd46a, type: 3}
       propertyPath: m_Layer
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4296359777225312180, guid: 958d2bc26f2a7e64982c9006878bd46a, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5738623570061709536, guid: 958d2bc26f2a7e64982c9006878bd46a, type: 3}
       propertyPath: m_Enabled
@@ -187,6 +193,38 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7221644623155977004, guid: 958d2bc26f2a7e64982c9006878bd46a, type: 3}
+      propertyPath: onDie.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7221644623155977004, guid: 958d2bc26f2a7e64982c9006878bd46a, type: 3}
+      propertyPath: onDie.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: RPG.SceneManagement.RestartManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7221644623155977004, guid: 958d2bc26f2a7e64982c9006878bd46a, type: 3}
+      propertyPath: onDie.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7221644623155977004, guid: 958d2bc26f2a7e64982c9006878bd46a, type: 3}
+      propertyPath: onDie.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7221644623155977004, guid: 958d2bc26f2a7e64982c9006878bd46a, type: 3}
+      propertyPath: onDie.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7221644623155977004, guid: 958d2bc26f2a7e64982c9006878bd46a, type: 3}
+      propertyPath: onDie.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: RestaratFromSave
+      objectReference: {fileID: 0}
+    - target: {fileID: 7221644623155977004, guid: 958d2bc26f2a7e64982c9006878bd46a, type: 3}
+      propertyPath: onDie.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8115777792915810033, guid: 958d2bc26f2a7e64982c9006878bd46a, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8724437989902438357, guid: 958d2bc26f2a7e64982c9006878bd46a, type: 3}
       propertyPath: uniqueIdentifier
       value: player
@@ -194,6 +232,10 @@ PrefabInstance:
     - target: {fileID: 8972641071843547110, guid: 958d2bc26f2a7e64982c9006878bd46a, type: 3}
       propertyPath: uniqueIdentifier
       value: player
+      objectReference: {fileID: 0}
+    - target: {fileID: 9075966588927223605, guid: 958d2bc26f2a7e64982c9006878bd46a, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6978087857035933200, guid: 958d2bc26f2a7e64982c9006878bd46a, type: 3}

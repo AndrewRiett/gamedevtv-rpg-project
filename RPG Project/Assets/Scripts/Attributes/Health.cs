@@ -20,6 +20,7 @@ namespace RPG.Attributes
         {
             baseStats = GetComponent<BaseStats>();
             healthPoints = new LazyValue<float>(GetInitialHealth);
+            
         }
 
         private void Start()

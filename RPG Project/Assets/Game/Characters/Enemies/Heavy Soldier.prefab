@@ -90,7 +90,7 @@ PrefabInstance:
     - target: {fileID: 137932601175015712, guid: 482181b92a2966c40aab551dee82c1af, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: bfbe2e8b331e2cc42be1591f949c0e41, type: 2}
+      objectReference: {fileID: 2100000, guid: 78be5954566d2d848918e51832341fa3, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 482181b92a2966c40aab551dee82c1af, type: 3}
 --- !u!4 &289485863267775575 stripped
@@ -172,7 +172,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 10613de821bf38a459f17e6acb848a48, type: 2}
     - target: {fileID: 8088168433623929549, guid: db25b9ddc371dd44e8e125eca405b414, type: 3}
       propertyPath: m_Name
-      value: Tough Enemy
+      value: Heavy Soldier
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db25b9ddc371dd44e8e125eca405b414, type: 3}

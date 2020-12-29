@@ -911,6 +911,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Damage Text Spawner
       objectReference: {fileID: 0}
+    - target: {fileID: 2139815019589921160, guid: 74705e33d20111a4e879dcd81098cd6d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2944217541283019080, guid: 74705e33d20111a4e879dcd81098cd6d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
